@@ -18,11 +18,11 @@ enum ProductType: Equatable {
 
 struct Product: Equatable {
     let name: String
-    let unitPrice: Decimal
+    let unitPrice: Float
     let type: ProductType
     let quantity: Int
 
-    var total: Decimal {
-        return Decimal(quantity) * unitPrice
+    var total: Float {
+        return Float(quantity) * unitPrice
     }
 }

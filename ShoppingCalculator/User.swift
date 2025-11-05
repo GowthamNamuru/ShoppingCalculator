@@ -21,6 +21,20 @@ enum UserType: Hashable {
             return false
         }
     }
+
+    var discount: Float {
+        switch self {
+        case .employee:
+            return 0.3
+        case .affliate:
+            return 0.1
+        case let .customerSince(since):
+            if isLoyalCustomer {
+                return 0.05
+            }
+            return 1
+        }
+    }
 }
 
 struct User {
@@ -29,5 +43,9 @@ struct User {
 
     init(role: Set<UserType>) {
         self.role = role
+    }
+
+    var totalDiscount: Float {
+        role.reduce(0) { $0 + $1.discount }
     }
 }
