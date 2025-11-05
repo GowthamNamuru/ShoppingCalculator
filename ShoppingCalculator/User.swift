@@ -46,6 +46,7 @@ struct User {
     }
 
     var totalDiscount: Float {
-        role.reduce(0) { $0 + $1.discount }
+        // Since we have to apply only one percentage based discount, we will consider max discount
+        role.reduce(0) { max($0, $1.discount) }
     }
 }

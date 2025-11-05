@@ -28,7 +28,7 @@ final class ShoppingCalculatorTests: XCTestCase {
         let bill = Bill(items: makeProducts(grocery: 300, nonGrocery: 280))
         let user = User(role: [.affliate, .employee])
         let discountCalculator = OverallDiscountCalculator(discounts: [PercentageDiscountCalculator(), AmountBasedDiscountCalculator()])
-        XCTAssertEqual(discountCalculator.calculate(user: user, bill: bill), 448.0)
+        XCTAssertEqual(discountCalculator.calculate(user: user, bill: bill), 476.0)
     }
 
     func test_PercentageThenAmount_WhenUserIsEligibleForLoyalty() {
