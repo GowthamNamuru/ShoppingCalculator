@@ -29,7 +29,7 @@ protocol DiscountCalculator {
 struct PercentageDiscountCalculator: DiscountCalculator {
     func apply(user: User, bill: Bill, currentTotal: Float) -> Float {
         let discount = (bill.nonGrocerySubTotal * user.totalDiscount)
-        return (currentTotal - discount)
+        return (currentTotal - discount).rounded(toPlaces: 2)
     }
 }
 
@@ -37,6 +37,6 @@ struct AmountBasedDiscountCalculator: DiscountCalculator {
     func apply(user: User, bill: Bill, currentTotal: Float) -> Float {
         let hundreds = Int((currentTotal / 100))
         let discount = (hundreds * 5)
-        return (currentTotal - Float(discount))
+        return (currentTotal - Float(discount)).rounded(toPlaces: 2)
     }
 }

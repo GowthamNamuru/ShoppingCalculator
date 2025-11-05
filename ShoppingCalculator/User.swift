@@ -32,7 +32,7 @@ enum UserType: Hashable {
             if isLoyalCustomer {
                 return 0.05
             }
-            return 1
+            return 0
         }
     }
 }

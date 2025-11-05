@@ -10,27 +10,38 @@ import XCTest
 
 final class ShoppingCalculatorTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func test_PercentageAndThenAmount_WhenUserIsOnlyEmployee() {
+        let bill = Bill(items: makeProducts(grocery: 300, nonGrocery: 280.0))
+        let user = User(role: [.employee])
+        let discountCalculator = OverallDiscountCalculator(discounts: [PercentageDiscountCalculator(), AmountBasedDiscountCalculator()])
+        XCTAssertEqual(discountCalculator.calculate(user: user, bill: bill), 476.0)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func test_PercentageAndThenAmount_WhenUserIsOnlyAffliate() {
+        let bill = Bill(items: makeProducts(grocery: 300, nonGrocery: 280.0))
+        let user = User(role: [.affliate])
+        let discountCalculator = OverallDiscountCalculator(discounts: [PercentageDiscountCalculator(), AmountBasedDiscountCalculator()])
+        XCTAssertEqual(discountCalculator.calculate(user: user, bill: bill), 527.0)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func test_PercentageThenAmount_WhenUserIsEmployeeAndAffliate() {
+        let bill = Bill(items: makeProducts(grocery: 300, nonGrocery: 280))
+        let user = User(role: [.affliate, .employee])
+        let discountCalculator = OverallDiscountCalculator(discounts: [PercentageDiscountCalculator(), AmountBasedDiscountCalculator()])
+        XCTAssertEqual(discountCalculator.calculate(user: user, bill: bill), 448.0)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func test_PercentageThenAmount_WhenUserIsEligibleForLoyalty() {
+        let bill = Bill(items: makeProducts(grocery: 300, nonGrocery: 280))
+        let user = User(role: [.customerSince(Date().addingTimeInterval(-3600 * 24 * 7))])
+        let discountCalculator = OverallDiscountCalculator(discounts: [PercentageDiscountCalculator(), AmountBasedDiscountCalculator()])
+        XCTAssertEqual(discountCalculator.calculate(user: user, bill: bill), 555)
     }
+}
 
+private extension ShoppingCalculatorTests {
+    func makeProducts(grocery: Float, nonGrocery: Float) -> [Product] {
+        [Product(name: "Grocery", unitPrice: grocery / 10, type: .grocesry, quantity: 10),
+         Product(name: "Non - Grocery", unitPrice: nonGrocery / 10, type: .other, quantity: 10)]
+    }
 }

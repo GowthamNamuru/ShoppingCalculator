@@ -13,7 +13,7 @@ final class OverallDiscountCalculator {
         self.discounts = discounts
     }
 
-    func calculate(user: User, bill: Bill) {
+    func calculate(user: User, bill: Bill) -> Float {
         var currentTotal = bill.subTotal
         var percentageAppliedOn: String = ""
         for discount in discounts {
@@ -25,6 +25,7 @@ final class OverallDiscountCalculator {
             }
             currentTotal = discountedValue
         }
+        return currentTotal
     }
 }
 
